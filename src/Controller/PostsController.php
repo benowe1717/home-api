@@ -36,7 +36,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @author    Benjamin Owen <benjamin@projecttiy.com>
  * @copyright 2025 Benjamin Owen
  * @license   https://mit-license.org/ MIT
- * @version   Release: 0.0.1
+ * @version   Release: 0.0.2
  * @link      https://github.com/benowe1717/home-api
  **/
 final class PostsController extends AbstractController
@@ -55,17 +55,6 @@ final class PostsController extends AbstractController
         $this->objectQueryService = new ObjectQueryService(
             $this->entityManagerInterface->getRepository(Post::class)
         );
-    }
-
-    /**
-     * Return all Posts from the database
-     *
-     * @return array
-     **/
-    private function getPostsFromDatabase(): array
-    {
-        $repository = $this->entityManagerInterface->getRepository(Post::class);
-        return $repository->findAll();
     }
 
     /**
@@ -288,6 +277,82 @@ final class PostsController extends AbstractController
         $this->entityManagerInterface->flush();
 
         $result['data'] = $this->representPost($post);
+
+        return $this->json($result);
+    }
+
+    /**
+     * /api/v1/posts/search Route to search for a set of Posts
+     *
+     * @param Request $request The HTTP Request
+     *
+     * @return JsonResponse
+     **/
+    #[Route('/api/v1/posts/search', name: 'app_search_posts_v1', methods: ['POST'])]
+    public function searchPosts(Request $request): JsonResponse
+    {
+        $page = 1;
+        $limit = 10;
+
+        if (null !== $request->query->get('page')) {
+            $page = (int) $request->query->get('page');
+            if (0 === $page) {
+                $page = 1;
+            }
+        }
+
+        if (null !== $request->query->get('limit')) {
+            $limit = (int) $request->query->get('limit');
+            if (0 === $limit) {
+                $limit = 10;
+            }
+            if ($limit > 100) {
+                $result = array(
+                    'result' => 'failed',
+                    'reason' => "Limit cannot be greater than 100!"
+                );
+                return $this->json($result, JsonResponse::HTTP_BAD_REQUEST);
+            }
+        }
+
+        $postData = $request->toArray();
+
+        if (!array_key_exists('filter', $postData)) {
+            $result = array(
+                'result' => 'failed',
+                'reason' => 'Missing `filter` key!'
+            );
+            return $this->json($result, JsonResponse::HTTP_BAD_REQUEST);
+        }
+
+        if (is_array($postData['filter'])) {
+            $data = $this->objectQueryService->searchObjects(
+                $postData['filter'],
+                $page,
+                $limit
+            );
+        } else {
+            $data = $this->objectQueryService->filterObjects(
+                $postData['filter'],
+                $page,
+                $limit
+            );
+        }
+
+        $posts = $data['rows'];
+        $pagination = $data['pagination'];
+
+        $allPosts = array();
+        foreach ($posts as $entity) {
+            array_push($allPosts, $this->representPost($entity));
+        }
+
+        $result = array(
+            'total' => $pagination->getTotalRecords(),
+            'pages' => $pagination->getPages(),
+            'limit' => $pagination->getLimit(),
+            'data' => $allPosts
+        );
 
         return $this->json($result);
     }
