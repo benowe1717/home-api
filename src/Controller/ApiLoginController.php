@@ -9,7 +9,7 @@
  * @package   Home-API
  * @author    Benjamin Owen <benjamin@projecttiy.com>
  * @copyright 2025 Benjamin Owen
- * @license   https://mit-license.org/ MIT
+ * @license   https://www.gnu.org/licenses/gpl-3.0.en.html#license-text GNU GPLv3
  * @version   CVS: $Id:$
  * @link      https://github.com/benowe1717/home-api
  **/
@@ -33,7 +33,7 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
  * @package   Home-API
  * @author    Benjamin Owen <benjamin@projecttiy.com>
  * @copyright 2025 Benjamin Owen
- * @license   https://mit-license.org/ MIT
+ * @license   https://www.gnu.org/licenses/gpl-3.0.en.html#license-text GNU GPLv3
  * @version   Release: 0.0.1
  * @link      https://github.com/benowe1717/home-api
  **/
