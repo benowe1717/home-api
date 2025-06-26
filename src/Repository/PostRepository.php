@@ -16,6 +16,37 @@ class PostRepository extends ServiceEntityRepository
         parent::__construct($registry, Post::class);
     }
 
+    /**
+     * Return the total number of Post objects
+     *
+     * @return int
+     **/
+    public function countObjects(): int
+    {
+        return $this->createQueryBuilder('p')
+            ->select('count(p.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    /**
+     * Return a paginated array of Post objects
+     *
+     * @param int $limit  The max number of objects to return
+     * @param int $offset The number of objects to skip
+     *
+     * @return array
+     **/
+    public function getObjectsPaginated(int $limit, int $offset): array
+    {
+        return $this->createQueryBuilder('p')
+            ->setMaxResults($limit)
+            ->setFirstResult($offset)
+            ->orderBy('p.id', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
     //    /**
     //     * @return Post[] Returns an array of Post objects
     //     */
