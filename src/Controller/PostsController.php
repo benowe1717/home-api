@@ -17,6 +17,7 @@
 namespace App\Controller;
 
 use App\Entity\Post;
+use App\Service\ObjectQueryService;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -41,6 +42,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 final class PostsController extends AbstractController
 {
     private EntityManagerInterface $entityManagerInterface;
+    private ObjectQueryService $objectQueryService;
 
     /**
      * PostsController constructor
@@ -50,6 +52,9 @@ final class PostsController extends AbstractController
     public function __construct(EntityManagerInterface $entityManagerInterface)
     {
         $this->entityManagerInterface = $entityManagerInterface;
+        $this->objectQueryService = new ObjectQueryService(
+            $this->entityManagerInterface->getRepository(Post::class)
+        );
     }
 
     /**
@@ -98,20 +103,54 @@ final class PostsController extends AbstractController
     /**
      * /api/v1/posts Route to list all Posts
      *
+     * @param Request $request The HTTP Request
+     *
      * @return JsonResponse
      **/
     #[Route('/api/v1/posts', name: 'app_posts_v1', methods: ['GET'])]
-    public function getPosts(): JsonResponse
+    public function getPosts(Request $request): JsonResponse
     {
-        $posts = $this->getPostsFromDatabase();
-        $count = count($posts);
+        $page = 1;
+        $limit = 10;
+
+        if (null !== $request->query->get('page')) {
+            $page = (int) $request->query->get('page');
+            if (0 === $page) {
+                $page = 1;
+            }
+        }
+
+        if (null !== $request->query->get('limit')) {
+            $limit = (int) $request->query->get('limit');
+            if (0 === $limit) {
+                $limit = 10;
+            }
+            if ($limit > 100) {
+                $result = array(
+                    'result' => 'failed',
+                    'reason' => "Limit cannot be greater than 100!"
+                );
+                return $this->json($result, JsonResponse::HTTP_BAD_REQUEST);
+            }
+        }
+
+        $data = $this->objectQueryService->getObjects($page, $limit);
+        $posts = $data['rows'];
+        $pagination = $data['pagination'];
 
         $allPosts = array();
         foreach ($posts as $entity) {
             array_push($allPosts, $this->representPost($entity));
         }
 
-        return $this->json(['total' => $count, 'data' => $allPosts]);
+        $result = array(
+            'total' => $pagination->getTotalRecords(),
+            'pages' => $pagination->getPages(),
+            'limit' => $pagination->getLimit(),
+            'data' => $allPosts,
+        );
+
+        return $this->json($result);
     }
 
     /**
