@@ -26,6 +26,7 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
+use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordCredentials;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
 
@@ -100,26 +101,43 @@ class ApiKeyAuthenticator extends AbstractAuthenticator
             );
         }
 
-        $pattern = "^(?P<scope>\w+)\s+(?P<key>\w+)$";
+        $pattern = "^(?P<scope>\w+)\s+(?P<key>[A-z0-9\=\+\/]+)$";
         if (!preg_match("/{$pattern}/", $authorization, $matches)) {
             throw new CustomUserMessageAuthenticationException(
                 'Invalid Authorization provided!'
             );
         }
 
-        if ('bearer' !== strtolower($matches['scope'])) {
+        if ('basic' === strtolower($matches['scope'])) {
+            $email = $request->getUser();
+            $password = $request->getPassword();
+
+            $passport = new Passport(
+                new UserBadge($email),
+                new PasswordCredentials($password)
+            );
+            if (null === $passport) {
+                throw new CustomUserMessageAuthenticationException(
+                    'Invalid Username or Password!'
+                );
+            }
+
+            $userIdentifier = $email;
+        } elseif ('bearer' === strtolower($matches['scope'])) {
+            $user = $this->getUserByApiKey($matches['key']);
+
+            if (null === $user) {
+                throw new CustomUserMessageAuthenticationException(
+                    'Invalid API Key!'
+                );
+            }
+
+            $userIdentifier = $user->getUserIdentifier();
+        } else {
             throw new CustomUserMessageAuthenticationException(
                 'Invalid Authorization scope provided!'
             );
         }
-
-        $user = $this->getUserByApiKey($matches['key']);
-        if (null === $user) {
-            throw new CustomUserMessageAuthenticationException(
-                'Invalid API Key!'
-            );
-        }
-        $userIdentifier = $user->getUserIdentifier();
 
         return new SelfValidatingPassport(new UserBadge($userIdentifier));
     }
