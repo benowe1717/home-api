@@ -57,8 +57,8 @@ final class HealthCheckController extends AbstractController
     private function testDatabaseConnection(): bool
     {
         try {
-            $connected = ! $this->entityManager->getConnection()->isConnected();
-            return $connected ? true : false;
+            $this->entityManager->getConnection()->connect();
+            return true;
         } catch (Exception $e) {
             return false;
         }
