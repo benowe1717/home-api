@@ -108,6 +108,8 @@ class AccessTokenAuthenticator extends AbstractAuthenticator
         }
         $userIdentifier = $user->getUserIdentifier();
 
+        $request->headers->set('PHP_AUTH_USER', $userIdentifier);
+
         return new SelfValidatingPassport(new UserBadge($userIdentifier));
     }
 
