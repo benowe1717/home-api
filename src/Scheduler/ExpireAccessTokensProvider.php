@@ -47,9 +47,8 @@ final class ExpireAccessTokensProvider implements ScheduleProviderInterface
      **/
     public function getSchedule(): Schedule
     {
-        return new Schedule()
-            ->add(
-                RecurringMessage::every('4 hours', new ExpireAccessTokens())
-            );
+        return (new Schedule())->add(
+            RecurringMessage::every('4 hours', new ExpireAccessTokens())
+        );
     }
 }
