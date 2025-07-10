@@ -40,7 +40,7 @@ use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPasspor
  * @author    Benjamin Owen <benjamin@projecttiy.com>
  * @copyright 2025 Benjamin Owen
  * @license   https://www.gnu.org/licenses/gpl-3.0.en.html#license-text GNU GPLv3
- * @version   Release: 0.0.1
+ * @version   Release: 0.0.2
  * @link      https://github.com/benowe1717/home-api
  **/
 class ApiKeyAuthenticator extends AbstractAuthenticator
@@ -58,16 +58,16 @@ class ApiKeyAuthenticator extends AbstractAuthenticator
     }
 
     /**
-     * Find the User for the given API Key
+     * Find the User for the given Access Token
      *
-     * @param string $apikey The API Key
+     * @param string $accessToken The Access Token
      *
      * @return ?User
      **/
-    private function getUserByApiKey(string $apikey): ?User
+    private function getUserByAccessToken(string $accessToken): ?User
     {
         $repo = $this->entityManagerInterface->getRepository(User::class);
-        return $repo->findUserByApiKey($apikey);
+        return $repo->findUserByAccessToken($accessToken);
     }
 
     /**
@@ -97,7 +97,7 @@ class ApiKeyAuthenticator extends AbstractAuthenticator
 
         if (null === $authorization) {
             throw new CustomUserMessageAuthenticationException(
-                'No API Key provided!'
+                'No Authentication provided!'
             );
         }
 
@@ -124,11 +124,10 @@ class ApiKeyAuthenticator extends AbstractAuthenticator
 
             $userIdentifier = $email;
         } elseif ('bearer' === strtolower($matches['scope'])) {
-            $user = $this->getUserByApiKey($matches['key']);
-
+            $user = $this->getUserByAccessToken($matches['key']);
             if (null === $user) {
                 throw new CustomUserMessageAuthenticationException(
-                    'Invalid API Key!'
+                    'Invalid Access Token!'
                 );
             }
 
