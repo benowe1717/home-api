@@ -1,6 +1,6 @@
 # /api/v1/post/id
 
-Create a Post
+Update a Post
 
 ## Methods
 
