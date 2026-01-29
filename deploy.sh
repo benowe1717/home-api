@@ -12,15 +12,6 @@ composer dump-env "$APP_ENV" || exit 1
 # Run database migrations
 php "$console" doctrine:migrations:migrate --no-interaction || exit 1
 
-# Import external assets
-php "$console" importmap:install || exit 1
-
-# Build Tailwind CSS
-php "$console" tailwind:build || exit 1
-
-# Compile Tailwind CSS
-php "$console" asset-map:compile || exit 1
-
 # Clear cache
 php "$console" cache:clear || exit 1
 
