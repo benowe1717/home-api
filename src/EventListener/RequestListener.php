@@ -3,7 +3,7 @@
 /**
  * Symfony Event Listener for kernel.request Events
  *
- * PHP version 8.4
+ * PHP version 8.5
  *
  * @category  EventListener
  * @package   Home-API
@@ -12,7 +12,7 @@
  * @license   https://www.gnu.org/licenses/gpl-3.0.en.html#license-text GNU GPLv3
  * @version   CVS: $Id:$
  * @link      https://github.com/benowe1717/home-api
- **/
+ */
 
 namespace App\EventListener;
 
@@ -24,7 +24,7 @@ use Symfony\Component\RateLimiter\RateLimiterFactoryInterface;
 /**
  * Symfony Event Listener for kernel.request Events
  *
- * PHP version 8.4
+ * PHP version 8.5
  *
  * @category  EventListener
  * @package   Home-API
@@ -33,7 +33,7 @@ use Symfony\Component\RateLimiter\RateLimiterFactoryInterface;
  * @license   https://www.gnu.org/licenses/gpl-3.0.en.html#license-text GNU GPLv3
  * @version   Release: 0.0.1
  * @link      https://github.com/benowe1717/home-api
- **/
+ */
 final class RequestListener
 {
     private RateLimiterFactoryInterface $apiV1Limiter;
@@ -42,7 +42,7 @@ final class RequestListener
      * RequestListener constructor
      *
      * @param RateLimiterFactoryInterface $apiV1Limiter The api_v1.limiter
-     **/
+     */
     public function __construct(RateLimiterFactoryInterface $apiV1Limiter)
     {
         $this->apiV1Limiter = $apiV1Limiter;
@@ -55,7 +55,7 @@ final class RequestListener
      * @param RequestEvent $event The HTTP Request Event
      *
      * @return void
-     **/
+     */
     #[AsEventListener]
     public function onRequestEvent(RequestEvent $event): void
     {

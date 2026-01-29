@@ -3,7 +3,7 @@
 /**
  * Symfony Controller for /api/v1/posts Route
  *
- * PHP version 8.4
+ * PHP version 8.5
  *
  * @category  Controller
  * @package   Home-API
@@ -12,24 +12,24 @@
  * @license   https://www.gnu.org/licenses/gpl-3.0.en.html#license-text GNU GPLv3
  * @version   CVS: $Id:$
  * @link      https://github.com/benowe1717/home-api
- **/
+ */
 
 namespace App\Controller;
 
 use App\Entity\Post;
 use App\Service\ObjectQueryService;
-use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use DateTime;
 
 /**
  * Symfony Controller for /api/v1/posts Route
  *
- * PHP version 8.4
+ * PHP version 8.5
  *
  * @category  Controller
  * @package   Home-API
@@ -38,7 +38,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @license   https://www.gnu.org/licenses/gpl-3.0.en.html#license-text GNU GPLv3
  * @version   Release: 0.0.2
  * @link      https://github.com/benowe1717/home-api
- **/
+ */
 final class PostsController extends AbstractController
 {
     private EntityManagerInterface $entityManagerInterface;
@@ -48,7 +48,7 @@ final class PostsController extends AbstractController
      * PostsController constructor
      *
      * @param EntityManagerInterface $entityManagerInterface The Entity Manager
-     **/
+     */
     public function __construct(EntityManagerInterface $entityManagerInterface)
     {
         $this->entityManagerInterface = $entityManagerInterface;
@@ -63,7 +63,7 @@ final class PostsController extends AbstractController
      * @param int $id The Post ID
      *
      * @return ?Post
-     **/
+     */
     private function getPostFromDatabase(int $id): ?Post
     {
         $repository = $this->entityManagerInterface->getRepository(Post::class);
@@ -76,7 +76,7 @@ final class PostsController extends AbstractController
      * @param Post $post The Post Entity
      *
      * @return array
-     **/
+     */
     private function representPost(Post $post): array
     {
         $postAsArray = array(
@@ -95,7 +95,7 @@ final class PostsController extends AbstractController
      * @param Request $request The HTTP Request
      *
      * @return JsonResponse
-     **/
+     */
     #[Route('/api/v1/posts', name: 'app_posts_v1', methods: ['GET'])]
     public function getPosts(Request $request): JsonResponse
     {
@@ -117,7 +117,7 @@ final class PostsController extends AbstractController
             if ($limit > 100) {
                 $result = array(
                     'result' => 'failed',
-                    'reason' => "Limit cannot be greater than 100!"
+                    'reason' => 'Limit cannot be greater than 100!'
                 );
                 return $this->json($result, JsonResponse::HTTP_BAD_REQUEST);
             }
@@ -150,7 +150,7 @@ final class PostsController extends AbstractController
      * @param ValidatorInterface $validator The Validator for Entities
      *
      * @return JsonResponse
-     **/
+     */
     #[Route(
         '/api/v1/posts/{id}',
         name: 'app_post_v1',
@@ -236,7 +236,7 @@ final class PostsController extends AbstractController
      * @param ValidatorInterface $validator The Validator for Entities
      *
      * @return JsonResponse
-     **/
+     */
     #[Route('/api/v1/posts/create', name: 'app_create_post_v1', methods: ['POST'])]
     public function createPost(
         Request $request,
@@ -287,7 +287,7 @@ final class PostsController extends AbstractController
      * @param Request $request The HTTP Request
      *
      * @return JsonResponse
-     **/
+     */
     #[Route('/api/v1/posts/search', name: 'app_search_posts_v1', methods: ['POST'])]
     public function searchPosts(Request $request): JsonResponse
     {
@@ -309,7 +309,7 @@ final class PostsController extends AbstractController
             if ($limit > 100) {
                 $result = array(
                     'result' => 'failed',
-                    'reason' => "Limit cannot be greater than 100!"
+                    'reason' => 'Limit cannot be greater than 100!'
                 );
                 return $this->json($result, JsonResponse::HTTP_BAD_REQUEST);
             }
