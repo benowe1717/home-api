@@ -39,10 +39,11 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
      * @param string $token The Access Token
      *
      * @return ?User
-     **/
+     */
     public function findUserByAccessToken(string $token): ?User
     {
-        return $this->createQueryBuilder('u')
+        return $this
+            ->createQueryBuilder('u')
             ->innerJoin('u.accessToken', 'a')
             ->andWhere('a.token = :needle')
             ->setParameter('needle', $token)
@@ -56,10 +57,11 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
      * @param string $apikey The API Key
      *
      * @return ?User
-     **/
+     */
     public function findUserByApiKey(string $apikey): ?User
     {
-        return $this->createQueryBuilder('u')
+        return $this
+            ->createQueryBuilder('u')
             ->andWhere('u.apikey = :needle')
             ->setParameter('needle', $apikey)
             ->getQuery()

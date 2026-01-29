@@ -3,7 +3,7 @@
 /**
  * Symfony Event Subscriber for kernel.response Events
  *
- * PHP version 8.4
+ * PHP version 8.5
  *
  * @category  EventSubscriber
  * @package   Home-API
@@ -12,7 +12,7 @@
  * @license   https://www.gnu.org/licenses/gpl-3.0.en.html#license-text GNU GPLv3
  * @version   CVS: $Id:$
  * @link      https://github.com/benowe1717/home-api
- **/
+ */
 
 namespace App\EventSubscriber;
 
@@ -23,7 +23,7 @@ use Symfony\Component\RateLimiter\RateLimiterFactoryInterface;
 /**
  * Symfony Event Subscriber for kernel.response Events
  *
- * PHP version 8.4
+ * PHP version 8.5
  *
  * @category  EventSubscriber
  * @package   Home-API
@@ -32,7 +32,7 @@ use Symfony\Component\RateLimiter\RateLimiterFactoryInterface;
  * @license   https://www.gnu.org/licenses/gpl-3.0.en.html#license-text GNU GPLv3
  * @version   Release: 0.0.1
  * @link      https://github.com/benowe1717/home-api
- **/
+ */
 class ResponseSubscriber implements EventSubscriberInterface
 {
     private RateLimiterFactoryInterface $apiV1Limiter;
@@ -41,7 +41,7 @@ class ResponseSubscriber implements EventSubscriberInterface
      * RequestListener constructor
      *
      * @param RateLimiterFactoryInterface $apiV1Limiter The api_v1.limiter
-     **/
+     */
     public function __construct(RateLimiterFactoryInterface $apiV1Limiter)
     {
         $this->apiV1Limiter = $apiV1Limiter;
@@ -54,7 +54,7 @@ class ResponseSubscriber implements EventSubscriberInterface
      * @param RequestEvent $event The HTTP Request Event
      *
      * @return void
-     **/
+     */
     public function onResponseEvent(ResponseEvent $event): void
     {
         $request = $event->getRequest();
@@ -79,7 +79,7 @@ class ResponseSubscriber implements EventSubscriberInterface
      * Return all subscribed events
      *
      * @return array
-     **/
+     */
     public static function getSubscribedEvents(): array
     {
         return [

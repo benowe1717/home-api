@@ -3,7 +3,7 @@
 /**
  * Symfony Command for Resetting a User Entity's Password or API Key
  *
- * PHP version 8.4
+ * PHP version 8.5
  *
  * @category  Command
  * @package   Home-API
@@ -12,26 +12,25 @@
  * @license   https://www.gnu.org/licenses/gpl-3.0.en.html#license-text GNU GPLv3
  * @version   CVS: $Id:$
  * @link      https://github.com/benowe1717/home-api
- **/
+ */
 
 namespace App\Command;
 
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Exception;
 
 /**
  * Symfony Command for Resetting a User Entity's Password or API Key
  *
- * PHP version 8.4
+ * PHP version 8.5
  *
  * @category  Command
  * @package   Home-API
@@ -40,7 +39,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
  * @license   https://www.gnu.org/licenses/gpl-3.0.en.html#license-text GNU GPLv3
  * @version   Release: 0.0.1
  * @link      https://github.com/benowe1717/home-api
- **/
+ */
 #[AsCommand(
     name: 'app:reset-user',
     description: 'Reset a Password or API Key for a User',
@@ -56,7 +55,7 @@ class ResetUserCommand extends Command
      *
      * @param EntityManagerInterface      $entityManagerInterface The Entity Manager
      * @param UserPasswordHasherInterface $userPasswordHasher The Password Hasher
-     **/
+     */
     public function __construct(
         EntityManagerInterface $entityManagerInterface,
         UserPasswordHasherInterface $userPasswordHasher
@@ -72,7 +71,7 @@ class ResetUserCommand extends Command
      * of 24 characters in length.
      *
      * @return string
-     **/
+     */
     private function generatePassword(): string
     {
         $keyspace = '123456789';
@@ -92,7 +91,7 @@ class ResetUserCommand extends Command
      * Generate a cryptographically secure random API Key in alphanumeric format.
      *
      * @return string
-     **/
+     */
     private function generateApiKey(): string
     {
         $bytes = random_bytes(16);
@@ -139,10 +138,11 @@ class ResetUserCommand extends Command
      * Configure the command
      *
      * @return void
-     **/
+     */
     protected function configure(): void
     {
-        $this->setHelp('Reset a Password or API Key for a User')
+        $this
+            ->setHelp('Reset a Password or API Key for a User')
             ->addArgument(
                 'email',
                 InputArgument::REQUIRED,
@@ -162,7 +162,7 @@ class ResetUserCommand extends Command
      * @param OutputInterface $output The returned value of the command
      *
      * @return int
-     **/
+     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $options = ['password', 'apikey'];

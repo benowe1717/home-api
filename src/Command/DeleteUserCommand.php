@@ -3,7 +3,7 @@
 /**
  * Symfony Command for Deleting a User Entity
  *
- * PHP version 8.4
+ * PHP version 8.5
  *
  * @category  Command
  * @package   Home-API
@@ -12,24 +12,24 @@
  * @license   https://www.gnu.org/licenses/gpl-3.0.en.html#license-text GNU GPLv3
  * @version   CVS: $Id:$
  * @link      https://github.com/benowe1717/home-api
- **/
+ */
 
 namespace App\Command;
 
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Exception;
 
 /**
  * Symfony Command for Deleting a User Entity
  *
- * PHP version 8.4
+ * PHP version 8.5
  *
  * @category  Command
  * @package   Home-API
@@ -38,7 +38,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  * @license   https://www.gnu.org/licenses/gpl-3.0.en.html#license-text GNU GPLv3
  * @version   Release: 0.0.1
  * @link      https://github.com/benowe1717/home-api
- **/
+ */
 #[AsCommand(
     name: 'app:delete-user',
     description: 'Delete a User',
@@ -53,7 +53,7 @@ class DeleteUserCommand extends Command
      * DeleteUserCommand constructor
      *
      * @param EntityManagerInterface $entityManagerInterface The Entity Manager
-     **/
+     */
     public function __construct(EntityManagerInterface $entityManagerInterface)
     {
         parent::__construct();
@@ -66,7 +66,7 @@ class DeleteUserCommand extends Command
      * @param string $email The Email Address of the User
      *
      * @return bool
-     **/
+     */
     private function deleteUser(string $email): bool
     {
         $repo = $this->entityManagerInterface->getRepository(User::class);
@@ -92,10 +92,11 @@ class DeleteUserCommand extends Command
      * Configure the command
      *
      * @return void
-     **/
+     */
     protected function configure(): void
     {
-        $this->setHelp('Delete a User')
+        $this
+            ->setHelp('Delete a User')
             ->addArgument(
                 'email',
                 InputArgument::REQUIRED,
@@ -110,7 +111,7 @@ class DeleteUserCommand extends Command
      * @param OutputInterface $output The returned value of the command
      *
      * @return int
-     **/
+     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);

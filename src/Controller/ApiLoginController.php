@@ -3,7 +3,7 @@
 /**
  * Symfony Controller for /api/login Route
  *
- * PHP version 8.4
+ * PHP version 8.5
  *
  * @category  Controller
  * @package   Home-API
@@ -12,7 +12,7 @@
  * @license   https://www.gnu.org/licenses/gpl-3.0.en.html#license-text GNU GPLv3
  * @version   CVS: $Id:$
  * @link      https://github.com/benowe1717/home-api
- **/
+ */
 
 namespace App\Controller;
 
@@ -27,7 +27,7 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 /**
  * Symfony Controller for /api/login Route
  *
- * PHP version 8.4
+ * PHP version 8.5
  *
  * @category  Controller
  * @package   Home-API
@@ -36,7 +36,7 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
  * @license   https://www.gnu.org/licenses/gpl-3.0.en.html#license-text GNU GPLv3
  * @version   Release: 0.0.1
  * @link      https://github.com/benowe1717/home-api
- **/
+ */
 final class ApiLoginController extends AbstractController
 {
     private EntityManagerInterface $entityManagerInterface;
@@ -45,7 +45,7 @@ final class ApiLoginController extends AbstractController
      * ApiLoginController constructor
      *
      * @param EntityManagerInterface $entityManagerInterface The Entity Manager
-     **/
+     */
     public function __construct(EntityManagerInterface $entityManagerInterface)
     {
         $this->entityManagerInterface = $entityManagerInterface;
@@ -57,7 +57,7 @@ final class ApiLoginController extends AbstractController
      * @param User $user The logged in User
      *
      * @return AccessToken
-     **/
+     */
     private function generateAccessToken(User $user): AccessToken
     {
         $accessToken = $user->getAccessToken();
@@ -97,7 +97,7 @@ final class ApiLoginController extends AbstractController
      * @param CurrentUser $currentUser The User Entityt
      *
      * @return JsonResponse
-     **/
+     */
     #[Route('/api/login', name: 'app_api_login', methods: ['POST'])]
     public function index(#[CurrentUser] ?User $currentUser): JsonResponse
     {

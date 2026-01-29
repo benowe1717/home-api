@@ -3,7 +3,7 @@
 /**
  * Doctrine Data Fixture for User Entity
  *
- * PHP version 8.4
+ * PHP version 8.5
  *
  * @category  DataFixture
  * @package   Home-API
@@ -12,7 +12,7 @@
  * @license   https://www.gnu.org/licenses/gpl-3.0.en.html#license-text GNU GPLv3
  * @version   CVS: $Id:$
  * @link      https://github.com/benowe1717/home-api
- **/
+ */
 
 namespace App\DataFixtures;
 
@@ -24,7 +24,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 /**
  * Doctrine Data Fixture for User Entity
  *
- * PHP version 8.4
+ * PHP version 8.5
  *
  * @category  DataFixture
  * @package   Home-API
@@ -33,7 +33,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
  * @license   https://www.gnu.org/licenses/gpl-3.0.en.html#license-text GNU GPLv3
  * @version   Release: 0.0.2
  * @link      https://github.com/benowe1717/home-api
- **/
+ */
 class UserFixtures extends Fixture
 {
     private UserPasswordHasherInterface $userPasswordHasher;
@@ -42,7 +42,7 @@ class UserFixtures extends Fixture
      * UserFixtures constructor
      *
      * @param UserPasswordHasherInterface $userPasswordHasher The Password Hasher
-     **/
+     */
     public function __construct(UserPasswordHasherInterface $userPasswordHasher)
     {
         $this->userPasswordHasher = $userPasswordHasher;
@@ -54,14 +54,9 @@ class UserFixtures extends Fixture
      * @param ObjectManager $manager Persist data to database
      *
      * @return void
-     **/
+     */
     public function load(ObjectManager $manager): void
     {
-        // $product = new Product();
-        // $manager->persist($product);
-
-        // $manager->flush();
-
         $file = './data/users.csv';
 
         $row = 1;

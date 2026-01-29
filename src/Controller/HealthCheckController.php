@@ -3,7 +3,7 @@
 /**
  * Symfony Controller for /health Route
  *
- * PHP version 8.4
+ * PHP version 8.5
  *
  * @category  Controller
  * @package   Home-API
@@ -12,20 +12,20 @@
  * @license   https://www.gnu.org/licenses/gpl-3.0.en.html#license-text GNU GPLv3
  * @version   CVS: $Id:$
  * @link      https://github.com/benowe1717/home-api
- **/
+ */
 
 namespace App\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
+use Exception;
 
 /**
  * Symfony Controller for /health Route
  *
- * PHP version 8.4
+ * PHP version 8.5
  *
  * @category  Controller
  * @package   Home-API
@@ -34,7 +34,7 @@ use Symfony\Component\Routing\Attribute\Route;
  * @license   https://www.gnu.org/licenses/gpl-3.0.en.html#license-text GNU GPLv3
  * @version   Release: 0.0.2
  * @link      https://github.com/benowe1717/home-api
- **/
+ */
 final class HealthCheckController extends AbstractController
 {
     private EntityManagerInterface $entityManager;
@@ -43,7 +43,7 @@ final class HealthCheckController extends AbstractController
      * HealthCheckController constructor
      *
      * @param EntityManagerInterface $entityManager The Entity Manager
-     **/
+     */
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
@@ -53,7 +53,7 @@ final class HealthCheckController extends AbstractController
      * Validate that a connection to the database can be established
      *
      * @return bool
-     **/
+     */
     private function testDatabaseConnection(): bool
     {
         try {
@@ -68,7 +68,7 @@ final class HealthCheckController extends AbstractController
      * Read the version number from a local file
      *
      * @return string
-     **/
+     */
     private function readVersionFile(): string
     {
         try {
@@ -83,7 +83,7 @@ final class HealthCheckController extends AbstractController
      * /health app_health_check Route
      *
      * @return JsonResponse
-     **/
+     */
     #[Route('/health', name: 'app_health_check')]
     public function index(): JsonResponse
     {
