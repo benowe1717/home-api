@@ -18,5 +18,5 @@ php "$console" cache:clear || exit 1
 # Start up workers to handle background tasks
 workers=("scheduler_expire-accesstokens")
 for worker in "${workers[@]}"; do
-    nohup ./start_worker.sh "$worker" "$TIME_LIMIT" & || exit 1
+    nohup ./start_worker.sh "$worker" "$TIME_LIMIT" &
 done
