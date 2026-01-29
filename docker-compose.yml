@@ -1,0 +1,69 @@
+services:
+  home-api-web:
+    image: httpd:2.4-alpine
+    depends_on:
+      - home-api-db
+    volumes:
+      - type: bind
+        source: ./web/home-api
+        target: /var/www/html
+      - type: bind
+        source: ./confs/httpd.conf
+        target: /usr/local/apache2/conf/httpd.conf
+    environment:
+      - APP_ENV=$APP_ENV
+      - APP_DEBUG=$APP_DEBUG
+      - SYMFONY_ENV=$SYMFONY_ENV
+      - TIME_LIMIT=$TIME_LIMIT
+    networks:
+      - backend
+    container_name: home-api-web
+    restart: unless-stopped
+
+  home-php:
+    build:
+      context: php/
+      tags:
+        - "projecttiy-php-fpm:latest"
+    depends_on:
+      - home-api-db
+    volumes:
+      - type: bind
+        source: ./web/home-api
+        target: /var/www/html
+      - type: bind
+        source: ./web/home-api/entrypoint.sh
+        target: /root/entrypoint.sh
+    environment:
+      - APP_ENV=$APP_ENV
+      - APP_DEBUG=$APP_DEBUG
+      - SYMFONY_ENV=$SYMFONY_ENV
+      - TIME_LIMIT=$TIME_LIMIT
+    networks:
+      - backend
+    container_name: home-api-php
+    restart: unless-stopped
+    entrypoint: /root/entrypoint.sh
+
+  home-db:
+    image: mariadb:latest
+    volumes:
+      - home-api-database:/var/lib/mysql
+    environment:
+      - MARIADB_USER=$MARIADB_USER
+      - MARIADB_PASSWORD=$MARIADB_PASSWORD
+      - MARIADB_ROOT_PASSWORD=$MARIADB_ROOT_PASSWORD
+      - MARIADB_DATABASE=$MARIADB_DATABASE
+    networks:
+      - backend
+    container_name: home-api-db
+    restart: unless-stopped
+
+networks:
+  backend:
+    name: docker_home-backend
+    external: true
+
+volumes:
+  home-api-database:
+    external: true

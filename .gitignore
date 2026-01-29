@@ -55,7 +55,8 @@
 /data/
 /.docker-env
 /.docker-run
-/.env
+/.docker-stop
+/.env.*
 /.env.dev
 /.env.local
 /.env.local.php
