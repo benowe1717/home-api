@@ -20,7 +20,7 @@ services:
     container_name: home-api-web
     restart: unless-stopped
 
-  home-php:
+  home-api-php:
     build:
       context: php/
       tags:
@@ -45,7 +45,7 @@ services:
     restart: unless-stopped
     entrypoint: /root/entrypoint.sh
 
-  home-db:
+  home-api-db:
     image: mariadb:latest
     volumes:
       - home-api-database:/var/lib/mysql
