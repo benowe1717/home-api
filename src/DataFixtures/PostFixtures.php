@@ -3,7 +3,7 @@
 /**
  * Doctrine Data Fixture for Post Entity
  *
- * PHP version 8.4
+ * PHP version 8.5
  *
  * @category  DataFixture
  * @package   Home-API
@@ -12,22 +12,22 @@
  * @license   https://www.gnu.org/licenses/gpl-3.0.en.html#license-text GNU GPLv3
  * @version   CVS: $Id:$
  * @link      https://github.com/benowe1717/home-api
- **/
+ */
 
 namespace App\DataFixtures;
 
-use App\Entity\Post;
-use DateTime;
-use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Persistence\ObjectManager;
 use App\DataFixtures\UserFixtures;
+use App\Entity\Post;
 use App\Entity\User;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Persistence\ObjectManager;
+use DateTime;
 
 /**
  * Doctrine Data Fixture for Post Entity
  *
- * PHP version 8.4
+ * PHP version 8.5
  *
  * @category  DataFixture
  * @package   Home-API
@@ -36,7 +36,7 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
  * @license   https://www.gnu.org/licenses/gpl-3.0.en.html#license-text GNU GPLv3
  * @version   Release: 0.0.1
  * @link      https://github.com/benowe1717/home-api
- **/
+ */
 class PostFixtures extends Fixture implements DependentFixtureInterface
 {
     /**
@@ -45,14 +45,9 @@ class PostFixtures extends Fixture implements DependentFixtureInterface
      * @param ObjectManager $manager Persist data to database
      *
      * @return void
-     **/
+     */
     public function load(ObjectManager $manager): void
     {
-        // $product = new Product();
-        // $manager->persist($product);
-
-        // $manager->flush();
-
         $file = './data/posts.csv';
 
         $row = 1;
@@ -90,7 +85,7 @@ class PostFixtures extends Fixture implements DependentFixtureInterface
      * Pull in dependent DataFixtures
      *
      * @return List<class-string<FixtureInterface>>
-     **/
+     */
     public function getDependencies(): array
     {
         return [

@@ -3,7 +3,7 @@
 /**
  * Symfony CustomAuthenticator for API Keys
  *
- * PHP version 8.4
+ * PHP version 8.5
  *
  * @category  CustomAuthenticator
  * @package   Home-API
@@ -12,7 +12,7 @@
  * @license   https://www.gnu.org/licenses/gpl-3.0.en.html#license-text GNU GPLv3
  * @version   CVS: $Id:$
  * @link      https://github.com/benowe1717/home-api
- **/
+ */
 
 namespace App\Security;
 
@@ -24,16 +24,16 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
-use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordCredentials;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
+use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
 
 /**
  * Symfony CustomAuthenticator for API Keys
  *
- * PHP version 8.4
+ * PHP version 8.5
  *
  * @category  CustomAuthenticator
  * @package   Home-API
@@ -42,7 +42,7 @@ use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPasspor
  * @license   https://www.gnu.org/licenses/gpl-3.0.en.html#license-text GNU GPLv3
  * @version   Release: 0.0.2
  * @link      https://github.com/benowe1717/home-api
- **/
+ */
 class ApiKeyAuthenticator extends AbstractAuthenticator
 {
     private EntityManagerInterface $entityManagerInterface;
@@ -51,7 +51,7 @@ class ApiKeyAuthenticator extends AbstractAuthenticator
      * ApiKeyAuthenticator constructor
      *
      * @param EntityManagerInterface $entityManagerInterface The Entity Manager
-     **/
+     */
     public function __construct(EntityManagerInterface $entityManagerInterface)
     {
         $this->entityManagerInterface = $entityManagerInterface;
@@ -63,7 +63,7 @@ class ApiKeyAuthenticator extends AbstractAuthenticator
      * @param string $accessToken The Access Token
      *
      * @return ?User
-     **/
+     */
     private function getUserByAccessToken(string $accessToken): ?User
     {
         $repo = $this->entityManagerInterface->getRepository(User::class);
@@ -90,7 +90,7 @@ class ApiKeyAuthenticator extends AbstractAuthenticator
      * @param Request $request The HTTP Request
      *
      * @return Passport
-     **/
+     */
     public function authenticate(Request $request): Passport
     {
         $authorization = $request->headers->get('Authorization');
@@ -101,7 +101,7 @@ class ApiKeyAuthenticator extends AbstractAuthenticator
             );
         }
 
-        $pattern = "^(?P<scope>\w+)\s+(?P<key>[A-z0-9\=\+\/]+)$";
+        $pattern = '^(?P<scope>\w+)\s+(?P<key>[A-z0-9\=\+\/]+)$';
         if (!preg_match("/{$pattern}/", $authorization, $matches)) {
             throw new CustomUserMessageAuthenticationException(
                 'Invalid Authorization provided!'
@@ -151,7 +151,7 @@ class ApiKeyAuthenticator extends AbstractAuthenticator
      * @param string         $firewallName The Firewall to authenticate to
      *
      * @return ?Response
-     **/
+     */
     public function onAuthenticationSuccess(
         Request $request,
         TokenInterface $token,
@@ -166,7 +166,6 @@ class ApiKeyAuthenticator extends AbstractAuthenticator
         $data = [
             // you may want to customize or obfuscate the message first
             'message' => strtr($exception->getMessageKey(), $exception->getMessageData()),
-
             // or to translate this message
             // $this->translator->trans($exception->getMessageKey(), $exception->getMessageData())
         ];

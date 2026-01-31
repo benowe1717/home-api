@@ -1,10 +1,21 @@
 #!/bin/bash
 
-PHP=$(which php)
+web_dir="/var/www/html"
+console="$web_dir/bin/console"
 
-THREAD="$1"
-TIME_LIMIT="$2"
+thread="$1"
+time_limit="$2"
+
+if [ -z "$thread" ]; then
+    echo "Please specify a thread name!"
+    exit 1
+fi
+
+if [ -z "$time_limit" ]; then
+    echo "Please specify a time limit!"
+    exit 1
+fi
 
 while true; do
-    $PHP ./bin/console messenger:consume "$THREAD" --time-limit="$TIME_LIMIT"
+    php "$console" messenger:consume "$thread" --time-limit="$time_limit" || exit 1
 done

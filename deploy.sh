@@ -1,28 +1,22 @@
 #!/bin/bash
 
-COMPOSER=$(which composer)
-NOHUP=$(which nohup)
-PHP=$(which php)
+web_dir="/var/www/html"
+console="$web_dir/bin/console"
 
-BINARIES=("composer" "nohup" "php")
-WORKERS=("scheduler_expire-accesstokens")
+# Install dependencies
+composer install --no-dev --optimize-autoloader || exit 1
 
-APP_ENV="prod"
-TIME_LIMIT=3600
+# Dump environment variables
+composer dump-env "$APP_ENV" || exit 1
 
-for ((i=0; i < ${#BINARIES[@]}; i++)); do
-    RESULT=$(which "${BINARIES[i]}" > /dev/null 2>&1; echo $?)
-    if [[ "$RESULT" != 0 ]]; then
-        /bin/echo "ERROR: Unable to locate ${BINARIES[i]}!"
-        exit 1
-    fi
-done
+# Run database migrations
+php "$console" doctrine:migrations:migrate --no-interaction || exit 1
 
-$COMPOSER dump-env $APP_ENV
-$COMPOSER install --no-dev --optimize-autoloader
-$PHP ./bin/console doctrine:migrations:migrate --no-interaction
-$PHP ./bin/console cache:clear
+# Clear cache
+php "$console" cache:clear || exit 1
 
-for worker in "${WORKERS[@]}"; do
-    $NOHUP ./start_worker.sh "$worker" "$TIME_LIMIT" &
+# Start up workers to handle background tasks
+workers=("scheduler_expire-accesstokens")
+for worker in "${workers[@]}"; do
+    nohup ./start_worker.sh "$worker" "$TIME_LIMIT" &
 done

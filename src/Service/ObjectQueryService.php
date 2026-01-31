@@ -3,7 +3,7 @@
 /**
  * Symfony Service for quering objects from a database
  *
- * PHP version 8.4
+ * PHP version 8.5
  *
  * @category  Service
  * @package   Home-API
@@ -12,14 +12,14 @@
  * @license   https://www.gnu.org/licenses/gpl-3.0.en.html#license-text GNU GPLv3
  * @version   CVS: $Id:$
  * @link      https://github.com/benowe1717/home-api
- **/
+ */
 
 namespace App\Service;
 
 /**
  * Symfony Service for querying objects from a database
  *
- * PHP version 8.4
+ * PHP version 8.5
  *
  * @category  Service
  * @package   Home-API
@@ -28,7 +28,7 @@ namespace App\Service;
  * @license   https://www.gnu.org/licenses/gpl-3.0.en.html#license-text GNU GPLv3
  * @version   Release: 0.0.2
  * @link      https://github.com/benowe1717/home-api
- **/
+ */
 class ObjectQueryService
 {
     private $repository;
@@ -38,7 +38,7 @@ class ObjectQueryService
      *
      * @param $repository A reference to a specific EntityManagerInterface
      *                    Repository for a specific Entity
-     **/
+     */
     public function __construct($repository)
     {
         $this->repository = $repository;
@@ -48,7 +48,7 @@ class ObjectQueryService
      * Return a count of all objects in the database for the referenced Entity
      *
      * @return int
-     **/
+     */
     private function countObjects(): int
     {
         return $this->repository->countObjects();
@@ -61,7 +61,7 @@ class ObjectQueryService
      * @param string $needle The search string
      *
      * @return int
-     **/
+     */
     private function countFilteredObjects(string $needle): int
     {
         return $this->repository->countFiltered($needle);
@@ -79,7 +79,7 @@ class ObjectQueryService
      * @param int $offset The number of objects to skip
      *
      * @return array
-     **/
+     */
     private function getPaginatedObjects(int $limit, int $offset): array
     {
         return $this->repository->getObjectsPaginated($limit, $offset);
@@ -94,7 +94,7 @@ class ObjectQueryService
      * @param int    $offset The number of objects to skip
      *
      * @return array
-     **/
+     */
     private function getPaginatedFilteredObjects(
         string $needle,
         int $limit,
@@ -119,7 +119,7 @@ class ObjectQueryService
      * @param int $limit       The max number of objects to return
      *
      * @return array [$pagination, $rows]
-     **/
+     */
     public function getObjects(int $currentPage, int $limit = 10): array
     {
         $totalRows = $this->countObjects();
@@ -145,7 +145,7 @@ class ObjectQueryService
      * @param int    $limit       The max number of objects to return
      *
      * @return array [$pagination, $rows]
-     **/
+     */
     public function filterObjects(
         string $needle,
         int $currentPage,
@@ -175,7 +175,7 @@ class ObjectQueryService
      * @param int   $limit       The max number of objects to return
      *
      * @return array [$pagination, $rows]
-     **/
+     */
     public function searchObjects(
         array $needles,
         int $currentPage,
